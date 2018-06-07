@@ -57,6 +57,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.disableInputHover = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -191,7 +192,8 @@
 
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
-
+        if (typeof options.disableInputHover === 'boolean')
+            this.disableInputHover = options.disableInputHover;
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
             this.startDate = this.minDate.clone();
@@ -404,7 +406,6 @@
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
             .on('click.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
-            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
             .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
@@ -412,6 +413,9 @@
             .on('click.daterangepicker', '.daterangepicker_input input', $.proxy(this.showCalendars, this))
             //.on('keyup.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this))
             .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this));
+
+        if (! this.disableInputHover)
+          this.container.find('.calendar').on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this));
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
