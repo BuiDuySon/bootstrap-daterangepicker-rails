@@ -58,6 +58,7 @@
         this.alwaysShowCalendars = false;
         this.ranges = {};
         this.disableInputHover = false;
+        this.container_class = ""
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -100,7 +101,8 @@
 
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
-            options.template = '<div class="daterangepicker dropdown-menu">' +
+            container_class = options.container_class || ""
+            options.template = '<div class="daterangepicker dropdown-menu '+ container_class +'">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
@@ -194,6 +196,8 @@
             this.maxDate = moment(options.maxDate);
         if (typeof options.disableInputHover === 'boolean')
             this.disableInputHover = options.disableInputHover;
+        if (typeof options.container_class === 'string')
+            this.container_class = options.container_class;
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
             this.startDate = this.minDate.clone();
